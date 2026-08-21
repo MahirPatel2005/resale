@@ -1,0 +1,179 @@
+import React from 'react';
+import { districtToMetroLines, getCleanImages } from '../App';
+
+export const getMetroColor = (line) => {
+  const name = line.toLowerCase();
+  if (name.includes('north south')) return '#d02c2f';
+  if (name.includes('east west')) return '#00953a';
+  if (name.includes('north east')) return '#742c8e';
+  if (name.includes('circle')) return '#f99f1b';
+  if (name.includes('downtown')) return '#005ec4';
+  if (name.includes('thomson-east coast') || name.includes('thomson east')) return '#9d5b25';
+  return '#64748b'; // default slate grey
+};
+
+export const getMetroAbbr = (line) => {
+  if (!line) return 'MRT';
+  const name = line.toLowerCase();
+  if (name.includes('north south')) return 'NSL';
+  if (name.includes('east west')) return 'EWL';
+  if (name.includes('north east')) return 'NEL';
+  if (name.includes('circle')) return 'CCL';
+  if (name.includes('downtown')) return 'DTL';
+  if (name.includes('thomson-east coast') || name.includes('thomson east')) return 'TEL';
+  return 'MRT';
+};
+
+export const getMetroLines = (districtCode) => {
+  return districtToMetroLines[districtCode] || [];
+};
+
+const districtMapping = {
+  'D01': 'Raffles Place, Cecil, Marina, People’s Park',
+  'D02': 'Anson, Tanjong Pagar',
+  'D03': 'Queenstown, Tiong Bahru',
+  'D04': 'Telok Blangah, HarbourFront',
+  'D05': 'Pasir Panjang, Hong Leong Garden, Clementi',
+  'D06': 'High Street, City Hall, Beach Road (part)',
+  'D07': 'Middle Road, Bugis, Golden Mile',
+  'D08': 'Little India, Farrer Park',
+  'D09': 'Orchard, Cairnhill, River Valley',
+  'D10': 'Ardmore, Bukit Timah, Holland Road, Tanglin',
+  'D11': 'Watten Estate, Novena, Thomson, Newton',
+  'D12': 'Balestier, Toa Payoh, Serangoon',
+  'D13': 'MacPherson, Braddell, Potong Pasir',
+  'D14': 'Geylang, Eunos, Paya Lebar',
+  'D15': 'Katong, Joo Chiat, Amber Road, Marine Parade',
+  'D16': 'Bedok, Upper East Coast, Siglap, Bayshore',
+  'D17': 'Loyang, Changi',
+  'D18': 'Tampines, Pasir Ris, Simei',
+  'D19': 'Serangoon Garden, Hougang, Sengkang, Punggol',
+  'D20': 'Bishan, Ang Mo Kio',
+  'D21': 'Upper Bukit Timah, Clementi Park, Ulu Pandan',
+  'D22': 'Jurong, Boon Lay, Lakeside',
+  'D23': 'Hillview, Dairy Farm, Bukit Panjang, Bukit Batok, Choa Chu Kang',
+  'D24': 'Lim Chu Kang, Tengah',
+  'D25': 'Kranji, Woodlands, Woodgrove',
+  'D26': 'Upper Thomson, Springleaf',
+  'D27': 'Yishun, Sembawang',
+  'D28': 'Seletar, Jalan Kayu, Yio Chu Kang'
+};
+
+export const formatDistrict = (districtCode) => {
+  if (!districtCode) return 'Singapore';
+  const name = districtMapping[districtCode] || 'Singapore';
+  return `${districtCode} – ${name}`;
+};
+
+export const getLaunchStatus = (item) => {
+  if (item.status === 'sold' || item.status === 'delisted') {
+    return 'Sold';
+  }
+  if (item.featured) {
+    return 'Hot Deal';
+  }
+  return 'For Sale';
+};
+
+export default function ListingsGrid({ listings, onViewDetails, columns = 3 }) {
+  if (listings.length === 0) {
+    return (
+      <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '60px 20px', color: 'var(--text-muted)' }}>
+        <i className="fa-solid fa-folder-open" style={{ fontSize: '40px', marginBottom: '12px' }}></i>
+        <p style={{ fontSize: '16px', fontWeight: '500' }}>No listings found matching your search filters.</p>
+      </div>
+    );
+  }
+
+  return (
+    <section className={`listings-grid cols-${columns}`}>
+      {listings.map(item => {
+        const launchStatus = getLaunchStatus(item);
+        const cleanImages = getCleanImages(item);
+        const coverImage = cleanImages[0] || 'https://sg.tepcdn.com/public/usr/8b7q6c/026af5-shutterstock-178043579.jpg';
+        
+        return (
+          <article key={item.id} className="property-card">
+            {/* Status Badge - Show Sold, Hot Deal, etc. */}
+            {launchStatus !== 'For Sale' && (
+              <span className={`status-badge ${launchStatus.toLowerCase().replace(' ', '-')}`}>
+                {launchStatus}
+              </span>
+            )}
+
+            {/* Property Image - Clicking triggers details view */}
+            <div
+              className="card-img-wrapper"
+              onClick={() => onViewDetails(item.id)}
+              style={{ cursor: 'pointer' }}
+              title={`View details for ${item.title}`}
+            >
+              <img
+                src={coverImage}
+                alt={item.title}
+                className="card-img"
+                loading="lazy"
+              />
+            </div>
+
+            {/* Card Content Details */}
+            <div className="card-content">
+              <h2 className="card-title">{item.title}</h2>
+              <div className="card-district">
+                District: {formatDistrict(item.district)}
+              </div>
+
+              {/* Metro Line Badges */}
+              <div className="card-metro-lines" style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '12px' }}>
+                {getMetroLines(item.district).map(line => (
+                  <span key={line} className="metro-badge-container">
+                    <span className="metro-badge-logo" style={{ backgroundColor: getMetroColor(line) }}>
+                      {getMetroAbbr(line)}
+                    </span>
+                    <span className="metro-badge-text">{line}</span>
+                  </span>
+                ))}
+              </div>
+
+              <div className="card-specs">
+                <div className="spec-item">
+                  <span className="spec-label">Property Type</span>
+                  <span className="spec-value">{item.propertyType || '-'}</span>
+                </div>
+                <div className="spec-item">
+                  <span className="spec-label">Est. Completion</span>
+                  <span className="spec-value">{item.topYear || '-'}</span>
+                </div>
+                <div className="spec-item">
+                  <span className="spec-label">Average PSF</span>
+                  <span className="spec-value">
+                    {item.psf ? `$${item.psf}` : '-'}
+                  </span>
+                </div>
+                <div className="spec-item">
+                  <span className="spec-label">% of units sold</span>
+                  <span className="spec-value">
+                    {item.unitsSoldPercent !== null && item.unitsSoldPercent !== undefined
+                      ? `${item.unitsSoldPercent}%`
+                      : '-'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Action Button */}
+              <div className="card-action">
+                <button
+                  className="btn-view"
+                  onClick={() => onViewDetails(item.id)}
+                >
+                  Details
+                </button>
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </section>
+  );
+}
+export { districtMapping };
