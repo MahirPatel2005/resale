@@ -1,0 +1,15 @@
+name: Daily Health Check
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Every day at 00:00 UTC
+  workflow_dispatch:
+
+jobs:
+  ping-health-endpoint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call Render health endpoint
+        run: |
+          curl --fail --silent --show-error https://resale-3us6.onrender.com/health
