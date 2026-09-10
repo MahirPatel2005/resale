@@ -2,8 +2,9 @@ name: Daily Health Check
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Every day at 00:00 UTC
+    - cron: '*/20 * * * *' # Every day at 00:00 UTC
   workflow_dispatch:
+   # Every 20 minutes
 
 jobs:
   ping-health-endpoint:
