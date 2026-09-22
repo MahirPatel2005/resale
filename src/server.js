@@ -26,14 +26,35 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/listin
 // Generate a hashed password if needed (for comparisons)
 const ADMIN_PASSWORD_HASH = bcrypt.hashSync(ADMIN_PASSWORD, 10);
 
-// Connect to MongoDB Database
-mongoose.connect(MONGODB_URI)
-  .then(() => {
+// Connect to MongoDB Database (supports both persistent server and serverless functions)
+let isConnectingDb = false;
+async function connectToDatabase() {
+  if (mongoose.connection.readyState >= 1) return;
+  if (!MONGODB_URI) {
+    console.warn('WARNING: MONGODB_URI is not defined.');
+    return;
+  }
+  if (isConnectingDb) return;
+  isConnectingDb = true;
+  try {
+    await mongoose.connect(MONGODB_URI);
     console.log('Connected to MongoDB database ✓');
-  })
-  .catch(err => {
+  } catch (err) {
     console.error('Failed to connect to MongoDB:', err);
-  });
+  } finally {
+    isConnectingDb = false;
+  }
+}
+
+connectToDatabase();
+
+// Middleware to ensure DB connection before handling API requests
+app.use(async (req, res, next) => {
+  if (req.path.startsWith('/api') && mongoose.connection.readyState < 1) {
+    await connectToDatabase();
+  }
+  next();
+});
 
 // Configure Cloudinary
 if (process.env.CLOUDINARY_CLOUD_NAME) {
@@ -254,19 +275,24 @@ app.post('/api/upload', authenticateToken, upload.single('image'), async (req, r
   }
 });
 
-// Serve frontend build static files in production
+// Serve frontend build static files when running as standalone Node server
 const frontendDist = path.join(__dirname, '..', 'frontend', 'dist');
-if (fs.existsSync(frontendDist)) {
+if (!process.env.VERCEL && fs.existsSync(frontendDist)) {
   app.use(express.static(frontendDist));
   app.get(/.*/, (req, res) => {
     res.sendFile(path.join(frontendDist, 'index.html'));
   });
-} else {
+} else if (!process.env.VERCEL) {
   app.get('/', (req, res) => {
     res.send('API Server Running. Please start frontend dev server or build frontend to serve UI.');
   });
 }
 
-app.listen(PORT, () => {
-  console.log(`Backend API Server running at http://localhost:${PORT}`);
-});
+// Start listening if executed directly (e.g. node src/server.js or on Render)
+if (!process.env.VERCEL && require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Backend API Server running at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
