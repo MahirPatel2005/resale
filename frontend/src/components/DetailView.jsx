@@ -43,11 +43,11 @@ export function cleanFacilities(arr) {
       i++;
       continue;
     }
-    
+
     const isNumber = /^\d+$/.test(item);
     const isRoman = /^[ivx]+$/i.test(item);
     const isOrdinal = /^\d+(st|nd|rd|th)$/i.test(item);
-    
+
     if (isOrdinal && i + 1 < arr.length && arr[i + 1].trim().toLowerCase() === 'storey:') {
       cleaned.push(`${item} Storey`);
       i += 2;
@@ -113,13 +113,18 @@ export default function DetailView({ id, listings, onBack, onSelectProperty }) {
         <p style={{ color: 'var(--text-muted)', marginTop: '8px' }}>The selected property listing could not be found.</p>
         <button
           onClick={() => {
-            window.location.href = "https://www.sherealestate.sg/properties";
+            if (window.history.length > 1) {
+              window.history.back();
+            } else {
+              window.location.href = "https://www.sherealestate.sg/properties";
+            }
           }}
           className="btn-view"
           style={{ marginTop: '24px' }}
         >
-          Back to Listings
+          Back
         </button>
+
       </div>
     );
   }
@@ -215,7 +220,7 @@ export default function DetailView({ id, listings, onBack, onSelectProperty }) {
 
       {/* Layout details structure (Left Content, Right Widget) */}
       <div className="detail-layout">
-        
+
         {/* Left Column: Media & Tabs */}
         <div>
           {/* Gallery Carousel */}
@@ -284,7 +289,7 @@ export default function DetailView({ id, listings, onBack, onSelectProperty }) {
           </div>
 
           {/* Tab Content Panels */}
-          
+
           {/* TAB 1: DETAILS */}
           {activeTab === 'details' && (
             <div className="tab-content active">
@@ -542,7 +547,7 @@ export default function DetailView({ id, listings, onBack, onSelectProperty }) {
               <h3 className="agent-name" style={{ fontSize: '20px', fontWeight: '700', color: 'var(--navy-dark)', margin: '0 0 4px', fontFamily: 'Poppins, sans-serif' }}>Elaine</h3>
               <div className="agent-agency" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>SHE Real Estate</div>
               <div className="agent-tagline" style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>Founder & Property Expert</div>
-              
+
               <div className="agent-badge" style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -649,7 +654,7 @@ export default function DetailView({ id, listings, onBack, onSelectProperty }) {
               const simStatus = getLaunchStatus(simItem);
               const simCleanImages = getCleanImages(simItem);
               const simCover = simCleanImages[0] || 'https://sg.tepcdn.com/public/usr/8b7q6c/026af5-shutterstock-178043579.jpg';
-              
+
               return (
                 <article
                   key={simItem.id}
