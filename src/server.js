@@ -10,7 +10,7 @@ const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 
 const config = require('./config');
-const Listing = require('./models/Listing');
+const Listing = require('./models/ResaleListing');
 
 const app = express();
 app.use(cors());
@@ -26,6 +26,61 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/listin
 // Generate a hashed password if needed (for comparisons)
 const ADMIN_PASSWORD_HASH = bcrypt.hashSync(ADMIN_PASSWORD, 10);
 
+// Helper: Ensure resale collection has resale properties migrated or seeded
+async function ensureResaleData() {
+  try {
+    const count = await Listing.countDocuments();
+    if (count === 0) {
+      console.log('Checking for existing resale listings to populate resale_listings collection...');
+      const db = mongoose.connection.db;
+      if (db) {
+        const collections = await db.listCollections({ name: 'listings' }).toArray();
+        if (collections.length > 0) {
+          const oldCollection = db.collection('listings');
+          const oldResaleListings = await oldCollection.find({
+            $or: [
+              { custom: true },
+              { url: { $regex: /propertyguru/i } }
+            ]
+          }).toArray();
+
+          if (oldResaleListings.length > 0) {
+            console.log(`Migrating ${oldResaleListings.length} resale listings into resale_listings collection...`);
+            for (const item of oldResaleListings) {
+              const doc = { ...item };
+              delete doc._id;
+              await Listing.findOneAndUpdate(
+                { slug: doc.slug },
+                { $set: doc },
+                { upsert: true, new: true }
+              );
+            }
+            console.log('Migration to resale_listings collection complete ✓');
+            return;
+          }
+        }
+      }
+
+      console.log('Seeding initial resale properties into resale_listings collection...');
+      try {
+        const seedData = require('./data/seedResaleListings.json');
+        for (const item of seedData) {
+          await Listing.findOneAndUpdate(
+            { slug: item.slug },
+            { $set: item },
+            { upsert: true, new: true }
+          );
+        }
+        console.log('Seeded resale properties into resale_listings collection ✓');
+      } catch (seedErr) {
+        console.warn('Could not load seed data:', seedErr.message);
+      }
+    }
+  } catch (err) {
+    console.error('Error ensuring resale listings:', err);
+  }
+}
+
 // Connect to MongoDB Database (supports both persistent server and serverless functions)
 let isConnectingDb = false;
 async function connectToDatabase() {
@@ -38,7 +93,8 @@ async function connectToDatabase() {
   isConnectingDb = true;
   try {
     await mongoose.connect(MONGODB_URI);
-    console.log('Connected to MongoDB database ✓');
+    console.log('Connected to MongoDB database ✓ (using collection: resale_listings)');
+    await ensureResaleData();
   } catch (err) {
     console.error('Failed to connect to MongoDB:', err);
   } finally {

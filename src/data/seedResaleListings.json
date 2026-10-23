@@ -1,0 +1,184 @@
+[
+  {
+    "slug": "1-moulmein-rise",
+    "title": "1 Moulmein Rise",
+    "url": "https://www.propertyguru.com.sg/listing/for-sale-1-moulmein-rise-500059046",
+    "address": "1 Moulmein Rise, Singapore",
+    "district": "D11",
+    "propertyType": "Condo",
+    "beds": "3 - 4",
+    "baths": 4,
+    "floorAreaSqft": "1238 - 3886",
+    "price": 6900000,
+    "psf": 1776,
+    "topYear": "2003",
+    "unitsSoldPercent": 100,
+    "tenure": "Freehold",
+    "totalUnits": 50,
+    "developer": "UOL Development Pte. Ltd.",
+    "image": "https://res.cloudinary.com/zb8qnprt/image/upload/v1787312783/properties/ygriwldfqprxhbr3mz1i.jpg",
+    "images": [
+      "https://res.cloudinary.com/zb8qnprt/image/upload/v1787312786/properties/tv6c6aruolv6x6hvgy8u.jpg",
+      "https://res.cloudinary.com/zb8qnprt/image/upload/v1787312787/properties/jhwhku5q2h0mtgl4bmmv.jpg",
+      "https://res.cloudinary.com/zb8qnprt/image/upload/v1787312788/properties/dbcdzet0palgqxufpvjz.jpg"
+    ],
+    "layouts": [
+      {
+        "desc": "3 Bedroom Apartment",
+        "type": "Type C1",
+        "sqft": "1238",
+        "units": 20
+      },
+      {
+        "desc": "4 Bedroom Apartment",
+        "type": "Type D1",
+        "sqft": "1582",
+        "units": 20
+      },
+      {
+        "desc": "4 Bedroom Triplex Penthouse",
+        "type": "Type PH",
+        "sqft": "3886",
+        "units": 10
+      }
+    ],
+    "facilities": [
+      "Private Swimming Pool",
+      "Lapis Pool",
+      "Gymnasium",
+      "24-Hour Security Service",
+      "Shaded Cover Carpark",
+      "Clubhouse",
+      "Children Playground",
+      "Barbecue Area"
+    ],
+    "priceRanges": [
+      {
+        "beds": "3 Beds",
+        "price": 3000000,
+        "psf": 2423
+      },
+      {
+        "beds": "4 Beds",
+        "price": 3800000,
+        "psf": 2402
+      },
+      {
+        "beds": "Penthouse",
+        "price": 6900000,
+        "psf": 1776
+      }
+    ],
+    "status": "active",
+    "disabled": false,
+    "featured": false,
+    "custom": true,
+    "history": [
+      {
+        "date": "Aug 2026",
+        "unit": "#24-01",
+        "beds": "4 Beds",
+        "sizeSqft": 1582,
+        "price": 3850000,
+        "psf": 2433
+      },
+      {
+        "date": "Jul 2026",
+        "unit": "#15-02",
+        "beds": "3 Beds",
+        "sizeSqft": 1238,
+        "price": 2980000,
+        "psf": 2407
+      },
+      {
+        "date": "May 2026",
+        "unit": "#28-02",
+        "beds": "Penthouse",
+        "sizeSqft": 3886,
+        "price": 6900000,
+        "psf": 1776
+      },
+      {
+        "date": "Feb 2026",
+        "unit": "#08-03",
+        "beds": "3 Beds",
+        "sizeSqft": 1238,
+        "price": 2850000,
+        "psf": 2302
+      }
+    ]
+  },
+  {
+    "slug": "sembawang-hills-estate",
+    "title": "Upper Thomson Terrace",
+    "url": "https://www.propertyguru.com.sg/listing/for-sale-sembawang-hills-estate-25525369",
+    "address": "Jalan Leban, Sembawang Hills Estate, Singapore",
+    "district": "D20",
+    "propertyType": "Landed",
+    "beds": "3",
+    "baths": 3,
+    "floorAreaSqft": "1500",
+    "price": 4280000,
+    "psf": 2853,
+    "topYear": "1980",
+    "unitsSoldPercent": 100,
+    "tenure": "Freehold",
+    "totalUnits": 1,
+    "developer": "Sembawang Hills Estate Developer",
+    "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1560185007-c5ca9d2c014d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "layouts": [
+      {
+        "desc": "3 Bedroom Inter-Terrace House",
+        "type": "Landed Terrace",
+        "sqft": "1500",
+        "units": 1
+      }
+    ],
+    "facilities": [
+      "Private Open-Air Courtyard",
+      "Roof Terrace",
+      "Car Porch",
+      "Private Garden",
+      "Renovated Dry & Wet Kitchens",
+      "Double-Volume Living Hall"
+    ],
+    "history": [
+      {
+        "date": "Jul 2026",
+        "unit": "Jalan Leban",
+        "beds": "3 Beds",
+        "sizeSqft": 1500,
+        "price": 4280000,
+        "psf": 2853
+      },
+      {
+        "date": "Apr 2026",
+        "unit": "Jalan Leban",
+        "beds": "3 Beds",
+        "sizeSqft": 1500,
+        "price": 4150000,
+        "psf": 2766
+      },
+      {
+        "date": "Dec 2025",
+        "unit": "Jalan Leban",
+        "beds": "3 Beds",
+        "sizeSqft": 1500,
+        "price": 4000000,
+        "psf": 2667
+      }
+    ],
+    "status": "active",
+    "disabled": false,
+    "featured": false,
+    "custom": true
+  }
+]

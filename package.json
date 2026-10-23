@@ -8,7 +8,8 @@
     "dev": "concurrently \"node src/server.js\" \"vite\"",
     "build": "vite build",
     "preview": "vite preview",
-    "clear-db": "node src/clear-db.js"
+    "clear-db": "node src/clear-db.js",
+    "migrate-resale": "node src/migrate-to-resale.js"
   },
   "license": "UNLICENSED",
   "dependencies": {
